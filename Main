@@ -1,0 +1,76 @@
+class Hangman
+  def initialize
+  @word= words.sample
+  @lives= 7
+  @word_teaser=""
+    @word.first.size.times do
+  @word_teaser +="_ "
+  end 
+  end 
+
+  def words
+[
+  ["cricket", "A game played by gentlemen"]
+["Jogging","We are not walking"]
+["celebrate","Remembering special moments"]
+["continenet","There are 7 of these"]
+["exotic", "Not from around here..."]
+]
+  end
+def print_teaser last_guess=nil
+
+update teaser(last_guess) unless last_guess.nil?
+puts @word_teaser
+end 
+
+def update_teaser
+new_teaser =@word_teaser.split
+
+new_teaser.each_with_index do |letter, index|
+  #relpace blank value with letter if it matches letter in word
+if letter == '_'&& word.first[index]== last_guess
+  new_teaser[index]= last_guess
+end
+end 
+@word_teaser= new_teaser.join(' ')
+end 
+
+def make_guess
+    puts "Enter a letter"
+  guess=gets.chomp
+  #if letter is not part of the word, remove letter from array
+ good_guess= @word.first.include? guess
+ if guess=="exit"
+  puts "Thank you for playing" 
+ elsif  good_guess
+  puts "You are correct!"
+  #remove correct guess from alphabet
+  @letters.delete guess
+  print_teaser guess
+
+  if @word.first==@word_teaser.split.join
+    puts "Congrats! You beat this round!"
+  else 
+    make_guess
+  end 
+ else
+  @lives-=1
+  puts "Sorry...you have #{@lives} left. Try again."
+  make_guess
+ end 
+else
+  puts "Game over! Better luck next time!"
+end 
+
+def begin 
+  #ask user for letter
+  puts "New game started...your word is #{@word.first.size} characters long"
+  puts "To exit game at any point type 'exit'"
+  print_teaser  
+  puts "Clue: #{@word.last}"
+  make_guess
+
+end 
+end 
+game= Hangman.new
+game.begin
